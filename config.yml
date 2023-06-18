@@ -1,0 +1,62 @@
+---
+# model
+model_type: 'cnn_flanc'        # only "cnn_flanc" and "resnet18_flanc" now and more in the future...
+cnn_hidden_size: [64, 128, 128]
+# resnet_hidden_size: [64, 64, 128, 256, 512]
+
+# data
+dataset_type: 'CIFAR10'             # only "MNIST" and "CIFAR10" now and more in the future...
+data_shape: [3, 32, 32]             # MNIST: [1, 28, 28], CIFAR10: [3, 32, 32], image100: [3, 144, 144]
+classes_size: 10                    # keep consistent with the classes of dataset_type  MNIST: 10, CIFAR10: 10, image100: 100
+data_partition_pattern: 3           # 0, 1, or 2. (0 is iid while 1 and 2 are both non-iid)
+non_iid_ratio: 8                    # make sure: 0 < non_iid_ratio < 10, it works only when data_partition_pattern is 1 or 2
+
+# batch size
+local_batch_size: 32                # local training batch size
+test_batch_size: 32                 # test batch size of the server
+client_test_batch_size: 32
+
+# training setting
+lr: 0.01
+decay_rate: 0.993
+min_lr: 0.001
+momentum: 0.9                        # momentum < 0 means the momentum is None
+weight_decay: 0.0005
+
+# global control
+client_num: 100                     # Total number of clients
+active_client_num: 10               # the number of selected clients in each epoch (for simplicity, it is fixed)
+epoch_num: 600
+local_iters: 50                     # local training step of the client in each epoch (for simplicity, it is fixed and the same among all clients)
+
+# CUDA
+server_use_cuda: True
+server_cuda: '1'                    # which gpu to choose for server
+client_use_cuda: True
+client_cuda: '-1'                   # '-1' means that client chooses the gpu adaptively according to the process id
+
+# path
+dataset_path: '/data/slwang/datasets/'
+model_save_path: '/data/slwang/FL_PS_MPI_FLANC/model_save/'
+
+# seed
+model_init_seed: 2024
+client_selection_seed: 2024
+data_partition_seed: 2024
+
+# algorithm parameters
+model_ratio: [ 
+    0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 
+    0.25, 0.25, 0.25, 0.25, 0.25, 0.25, 0.25, 0.25, 0.25, 0.25, 0.25, 0.25, 0.25, 0.25, 0.25, 0.25, 0.25, 0.25, 0.25, 0.25, 0.25, 0.25, 0.25, 0.25, 0.25,
+    0.75, 0.75, 0.75, 0.75, 0.75, 0.75, 0.75, 0.75, 0.75, 0.75, 0.75, 0.75, 0.75, 0.75, 0.75, 0.75, 0.75, 0.75, 0.75, 0.75, 0.75, 0.75, 0.75, 0.75, 0.75, 
+    1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0
+]                                         # make sure that the size of model_ratio equals client_num
+# model_ratio: [0.25, 0.25, 0.25, 0.25, 0.25, 0.25, 0.25, 0.25, 0.25, 0.25, 0.25, 0.5, 0.5, 0.5, 0.75, 0.75, 0.75, 1.0, 1.0, 1.0]
+basis_in_ratio: 0.125                     # ratio of in channel for the basis network
+basis_out_ratio: 0.25                     # ratio of out channel for the basis network
+lambda_loss: 0.1                            # orthogonal regularization coefficient of the loss
+
+###################################
+norm: 'bn'
+scale: False
+
