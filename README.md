@@ -12,7 +12,7 @@ The official implementation of this paper is [here](https://github.com/HarukiYqM
 
 ## Start program
 
-If you want to run Flanc with 10 clients, you can input this command in the console:
+If you want to run Flanc with 10 clients selected in each epoch, you can input this command in the console:
 
 ``
 mpiexec --oversubscribe -n 1 python server_main.py : -n 10 python client_main.py
@@ -20,4 +20,4 @@ mpiexec --oversubscribe -n 1 python server_main.py : -n 10 python client_main.py
 
 Each client and the server runs as a process, which communicates with each other by MPI.
 
-Make sure that the value of hyperparameter "active_client_num" in config.yml equals the number of clients.
+Make sure that the value of hyperparameter "active_client_num" in config.yml equals the number of clients in the command.
