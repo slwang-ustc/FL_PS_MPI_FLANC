@@ -41,10 +41,10 @@ class BasicBlock(nn.Module):
 
         self.residual_function = nn.Sequential(
             DecomBlock(basis_in_channel, basis_out_channel, in_planes, out_planes, stride),
-            nn.BatchNorm2d(out_planes, track_running_stats=False),
+            nn.BatchNorm2d(out_planes),
             nn.ReLU(inplace=True),
             DecomBlock(basis_in_channel, basis_out_channel, out_planes, out_planes * BasicBlock.expansion, 1),
-            nn.BatchNorm2d(out_planes * BasicBlock.expansion, track_running_stats=False)
+            nn.BatchNorm2d(out_planes * BasicBlock.expansion)
         )
 
         self.shortcut = nn.Sequential()
@@ -52,7 +52,7 @@ class BasicBlock(nn.Module):
         if stride != 1 or in_planes != out_planes * BasicBlock.expansion:
             self.shortcut = nn.Sequential(
                 nn.Conv2d(in_planes, out_planes * BasicBlock.expansion, 1, stride, bias=False),
-                nn.BatchNorm2d(out_planes * BasicBlock.expansion, track_running_stats=False)
+                nn.BatchNorm2d(out_planes * BasicBlock.expansion)
             )
 
     def forward(self, x):
@@ -75,7 +75,7 @@ class ResNet_Flanc(nn.Module):
 
         self.conv1 = nn.Sequential(
             nn.Conv2d(cfg['data_shape'][0], self.hidden_size[0], 3, 1, 1, bias=False),
-            nn.BatchNorm2d(self.hidden_size[0], track_running_stats=False),
+            nn.BatchNorm2d(self.hidden_size[0]),
             nn.ReLU(inplace=True)
         )
 
